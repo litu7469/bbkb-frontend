@@ -29,7 +29,7 @@ interface QueryResult {
   has_superseded_citation: boolean;
 }
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-b1ff6.up.railway.app';
 
 const SAMPLES_EN = [
   'What is the single borrower exposure limit for banks?',
