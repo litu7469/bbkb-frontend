@@ -1,4 +1,5 @@
 'use client';
+// BBKB v1.0 — fresh build
 
 import './globals.css';
 import { useState } from 'react';
@@ -32,7 +33,7 @@ function Logo() {
           BBKB
         </div>
         <div style={{
-          fontSize: 11, color: '#93c5fd', lineHeight: 1.2,
+          fontSize: 12, color: '#93c5fd', lineHeight: 1.2,
           fontFamily: 'Noto Sans Bengali, sans-serif',
         }}>
           বাংলাদেশ ব্যাংকিং জ্ঞানভাণ্ডার
@@ -87,35 +88,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             ))}
           </div>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-            <a href="https://bbkb-frontend.vercel.app" target="_blank" rel="noopener noreferrer"
-              className="navbar-links"
-              style={{
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                color: 'white', fontWeight: 600, fontSize: 12,
-                padding: '6px 12px', borderRadius: 7,
-                textDecoration: 'none', whiteSpace: 'nowrap',
-                display: 'flex', alignItems: 'center', gap: 5,
-              }}>
-              <span style={{ fontSize: 8, background: '#22c55e', borderRadius: '50%',
-                width: 7, height: 7, display: 'inline-block' }} />
-              Live Site
-            </a>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem' }}>
             <Link href="/ask" style={{
-                background: '#F5A623', color: '#1c1917',
-                fontWeight: 800, fontSize: 13,
-                padding: '7px 16px', borderRadius: 7,
-                textDecoration: 'none', whiteSpace: 'nowrap',
+              background: '#F5A623', color: '#1c1917',
+              fontWeight: 800, fontSize: 13,
+              padding: '7px 16px', borderRadius: 7,
+              textDecoration: 'none', whiteSpace: 'nowrap',
             }}>
-                Ask AI
-             </Link>
-          </div>
+              Ask AI
+            </Link>
 
             {/* Hamburger */}
             <button className="hamburger" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu"
-              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4 }}
-                className="hamburger-btn">
+              style={{ background: 'none', border: 'none', cursor: 'pointer', padding: 4, display: 'none' }}>
               <div style={{ width: 20, height: 2, background: 'white', borderRadius: 2, marginBottom: 4,
                 transform: menuOpen ? 'rotate(45deg) translate(4px, 4px)' : 'none', transition: 'all 0.2s' }} />
               <div style={{ width: 20, height: 2, background: 'white', borderRadius: 2, marginBottom: 4,
@@ -182,7 +167,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   </div>
                   <div>
                     <div style={{ fontSize: 14, fontWeight: 800, color: 'white' }}>BBKB</div>
-                    <div style={{ fontSize: 11, color: '#93c5fd', fontFamily: 'Noto Sans Bengali, sans-serif' }}>
+                    <div style={{ fontSize: 12, color: '#93c5fd', fontFamily: 'Noto Sans Bengali, sans-serif' }}>
                       বাংলাদেশ ব্যাংকিং জ্ঞানভাণ্ডার
                     </div>
                   </div>
@@ -251,13 +236,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* Mobile responsive styles */}
         <style>{`
-              @media (max-width: 768px) {
-                .navbar-links { display: none !important; }
-              }
-              @media (min-width: 769px) {
-               .hamburger-btn { display: none !important; }
-              }
-            `}</style>
+          @media (max-width: 768px) {
+            .navbar-links { display: none !important; }
+            .hamburger { display: flex !important; flex-direction: column; }
+          }
+        `}</style>
 
       </body>
     </html>
