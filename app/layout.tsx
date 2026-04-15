@@ -49,15 +49,45 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="en">
       <head>
-        <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <meta name="description" content="Bangladesh's AI-powered regulatory intelligence platform. Search 5,000+ Bangladesh Bank, NBR, BSEC and BFIU circulars instantly in English or বাংলা." />
-        <meta property="og:title" content="BBKB — Bangladesh Banking Knowledge Base" />
-        <meta property="og:description" content="AI-powered search for Bangladesh banking regulations, circulars and laws." />
-        <title>BBKB — Bangladesh Banking Knowledge Base</title>
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
-      </head>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  {/* Primary meta */}
+  <title>BBKB — Bangladesh Banking Knowledge Base</title>
+  <meta name="description" content="AI-powered regulatory intelligence for Bangladesh's banking sector. Search 5,000+ Bangladesh Bank, NBR, BSEC and BFIU circulars instantly in English or বাংলা." />
+  <meta name="author" content="BBKB" />
+  <meta name="keywords" content="Bangladesh Bank, circular, regulatory, NBR, BSEC, BFIU, banking, compliance, AI" />
+
+  {/* Favicon */}
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+  <link rel="shortcut icon" href="/favicon.svg" />
+  <meta name="theme-color" content="#0D2B5E" />
+
+  {/* Open Graph — for WhatsApp, LinkedIn, Facebook previews */}
+  <meta property="og:type"        content="website" />
+  <meta property="og:url"         content="https://bbkb-frontend.vercel.app" />
+  <meta property="og:title"       content="BBKB — Bangladesh Banking Knowledge Base" />
+  <meta property="og:description" content="AI-powered search for 5,000+ Bangladesh banking regulations. Ask in English or বাংলা — get instant cited answers from BB, NBR, BSEC and BFIU." />
+  <meta property="og:image"       content="https://bbkb-frontend.vercel.app/og-image.png" />
+  <meta property="og:image:width"  content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:site_name"   content="BBKB" />
+  <meta property="og:locale"      content="en_BD" />
+
+  {/* Twitter Card */}
+  <meta name="twitter:card"        content="summary_large_image" />
+  <meta name="twitter:title"       content="BBKB — Bangladesh Banking Knowledge Base" />
+  <meta name="twitter:description" content="AI-powered search for Bangladesh banking regulations. Ask in English or বাংলা." />
+  <meta name="twitter:image"       content="https://bbkb-frontend.vercel.app/og-image.png" />
+
+ {/* OG_Image */}
+  <meta property="og:image" content="https://bbkb-frontend.vercel.app/og-image" />
+  <meta name="twitter:image" content="https://bbkb-frontend.vercel.app/og-image" />
+
+  {/* Fonts */}
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
       <body>
 
         {/* Navbar */}
