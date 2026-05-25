@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 export const dynamic = 'force-dynamic';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://web-production-b1ff6.up.railway.app';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 interface Document {
   id:               string;
@@ -199,7 +199,18 @@ function SearchContent() {
 
       const res  = await fetch(`${API_URL}/api/v1/search/?${params}`);
       const data = await res.json();
-      setResult(data);
+
+      // Normalize API response — backend may return 'documents' or 'items'
+      const normalized: SearchResult = {
+        items:          data.items || data.documents || data.results || [],
+        total:          data.total          ?? data.count          ?? 0,
+        semantic_count: data.semantic_count ?? 0,
+        keyword_count:  data.keyword_count  ?? 0,
+        query:          data.query          || text,
+        mode:           data.mode           || mode,
+      };
+      setResult(normalized);
+
     } catch (err) {
       console.error(err);
     } finally {
