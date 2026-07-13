@@ -2,27 +2,17 @@
 
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import { API_URL } from '@/lib/config';
+import { formatDate } from '@/lib/format';
+import type { RecentDoc } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8006';
 
 interface Stats {
   total:       number;
   by_body:     Record<string, number>;
   by_dept:     Record<string, number>;
   date_range:  { oldest: string; newest: string };
-}
-
-interface RecentDoc {
-  id:           string;
-  title_en:     string;
-  circular_ref: string | null;
-  issuing_body: string;
-  department:   string | null;
-  issue_date:   string;
-  primary_url:  string;
-  topic_tags:   string[] | null;
 }
 
 const FEATURES = [
@@ -89,15 +79,6 @@ const REGULATORS = [
   { code: 'Ministry of Law', name: 'Bangladesh Banking Laws & Acts',         color: '#0f766e', bg: '#f0fdfa' },
   { code: 'International',   name: 'International Banking Standards',        color: '#be185d', bg: '#fdf2f8' },
 ];
-
-function formatDate(d: string) {
-  if (!d) return '';
-  try {
-    return new Date(d).toLocaleDateString('en-GB', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    });
-  } catch { return d; }
-}
 
 function StatCard({ label, value, sub, color }: {
   label: string; value: string | number; sub?: string; color: string;
@@ -510,7 +491,7 @@ export default function HomePage() {
                         }}>{doc.department}</span>
                       )}
                       <span className="tag tag-grey" style={{ fontSize: 10 }}>
-                        {formatDate(doc.issue_date)}
+                        {formatDate(doc.issue_date, '')}
                       </span>
                       {doc.topic_tags?.slice(0, 2).map(tag => (
                         <span key={tag} style={{

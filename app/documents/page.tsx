@@ -2,33 +2,12 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import Link from 'next/link';
+import { API_URL } from '@/lib/config';
+import { formatDate } from '@/lib/format';
+import { ALL_ISSUING_BODIES as ISSUING_BODIES, BB_DEPARTMENTS } from '@/lib/constants';
+import type { LibraryDocument as Document } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8006';
-
-interface Document {
-  id:               string;
-  title_en:         string;
-  title_bn:         string | null;
-  circular_ref:     string | null;
-  issuing_body:     string;
-  department:       string | null;
-  issue_date:       string;
-  status:           string;
-  primary_url:      string;
-  category_primary: string | null;
-  topic_tags:       string[] | null;
-  language:         string | null;
-}
-
-const ISSUING_BODIES = ['BB', 'NBR', 'BSEC', 'BFIU', 'Ministry of Law', 'International'];
-
-const BB_DEPARTMENTS = [
-  'BRPD','DOS','DFIM','FEPD','BFIU','PSD','MPD','SME',
-  'SDAD','DMD','SPCD','SFD','FEOD','FEID','ACD','CIB',
-  'FICSD','ISMD','FSD','FININCLD','GBCSRD',
-];
 
 const TOPIC_TAGS = [
   'loan classification','capital adequacy','AML/CFT','KYC',
@@ -50,15 +29,6 @@ const SORT_OPTIONS = [
   { value: 'date_asc',  label: '📅 Oldest First' },
   { value: 'title_asc', label: '🔤 Title A–Z'    },
 ];
-
-function formatDate(d: string) {
-  if (!d) return '—';
-  try {
-    return new Date(d).toLocaleDateString('en-GB', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    });
-  } catch { return d; }
-}
 
 function DocCard({ doc }: { doc: Document }) {
   const hasBangla = doc.title_bn && doc.title_bn.length > 3;

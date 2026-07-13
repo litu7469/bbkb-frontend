@@ -3,45 +3,12 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { API_URL } from '@/lib/config';
+import { formatDate } from '@/lib/format';
+import { ISSUING_BODIES, BB_DEPARTMENTS } from '@/lib/constants';
+import type { SearchDocument as Document, SearchResult, SearchMode } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8006';
-
-interface Document {
-  id:               string;
-  title_en:         string;
-  title_bn:         string | null;
-  circular_ref:     string | null;
-  issuing_body:     string;
-  department:       string | null;
-  issue_date:       string;
-  status:           string;
-  primary_url:      string;
-  category_primary: string | null;
-  topic_tags:       string[] | null;
-  summary_en:       string | null;
-  similarity?:      number;
-  _source?:         string;
-}
-
-interface SearchResult {
-  items:          Document[];
-  total:          number;
-  semantic_count: number;
-  keyword_count:  number;
-  query:          string;
-  mode:           string;
-}
-
-type SearchMode = 'hybrid' | 'semantic' | 'keyword';
-
-const ISSUING_BODIES = ['BB', 'NBR', 'BSEC', 'BFIU'];
-const BB_DEPTS = [
-  'BRPD', 'DOS', 'DFIM', 'FEPD', 'BFIU', 'PSD', 'MPD',
-  'SME', 'SDAD', 'DMD', 'SPCD', 'GBCSRD', 'FININCLD',
-  'ACD', 'CIB', 'FEOD', 'FEID', 'SFD',
-];
 
 const SAMPLE_QUERIES = [
   'loan classification and provisioning rules',
@@ -53,15 +20,6 @@ const SAMPLE_QUERIES = [
   'interest rate policy repo rate',
   'agricultural credit rural finance',
 ];
-
-function formatDate(d: string) {
-  if (!d) return '—';
-  try {
-    return new Date(d).toLocaleDateString('en-GB', {
-      day: '2-digit', month: 'short', year: 'numeric'
-    });
-  } catch { return d; }
-}
 
 function SourceBadge({ source }: { source?: string }) {
   if (!source) return null;
@@ -329,7 +287,7 @@ function SearchContent() {
                 style={{ width: '100%', padding: '0.5rem', borderRadius: 6,
                          border: '1px solid #e2e8f0', fontSize: 13, color: '#374151' }}>
                 <option value="">All Departments</option>
-                {BB_DEPTS.map(d => <option key={d} value={d}>{d}</option>)}
+                {BB_DEPARTMENTS.map(d => <option key={d} value={d}>{d}</option>)}
               </select>
             </div>
 
