@@ -2,34 +2,10 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { API_URL } from '@/lib/config';
+import type { Language, QueryResult } from '@/lib/types';
 
 export const dynamic = 'force-dynamic';
-
-type Language = 'auto' | 'en' | 'bn';
-
-interface Citation {
-  document_id:  string;
-  title_en:     string;
-  title_bn:     string | null;
-  circular_ref: string | null;
-  issuing_body: string;
-  issue_date:   string;
-  primary_url:  string;
-  status:       string;
-  language:     string | null;
-}
-
-interface QueryResult {
-  answer:                  string;
-  citations:               Citation[];
-  model_used:              string;
-  latency_ms:              number;
-  query_language:          string;
-  disclaimer:              string;
-  has_superseded_citation: boolean;
-}
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8006';
 
 const SAMPLES_EN = [
   'What is the single borrower exposure limit for banks?',

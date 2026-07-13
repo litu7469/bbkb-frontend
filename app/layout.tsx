@@ -4,6 +4,7 @@
 import './globals.css';
 import { useState } from 'react';
 import Link from 'next/link';
+import { BbkbMark } from './components/BbkbMark';
 
 const NAV_LINKS = [
   { href: '/',          label: 'Home'      },
@@ -14,20 +15,7 @@ const NAV_LINKS = [
 function Logo() {
   return (
     <Link href="/" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 10 }}>
-      <div style={{
-        width: 34, height: 34, background: '#F5A623',
-        borderRadius: 8, display: 'flex', alignItems: 'center',
-        justifyContent: 'center', flexShrink: 0,
-      }}>
-        <svg width="19" height="19" viewBox="0 0 20 20" fill="none">
-          <rect x="2" y="4" width="16" height="2" rx="1" fill="#0D2B5E"/>
-          <rect x="2" y="8" width="12" height="2" rx="1" fill="#0D2B5E"/>
-          <rect x="2" y="12" width="14" height="2" rx="1" fill="#0D2B5E"/>
-          <circle cx="15" cy="14" r="4" fill="#0D2B5E"/>
-          <path d="M13.5 14l1 1 2-2" stroke="#F5A623" strokeWidth="1.5"
-            strokeLinecap="round" strokeLinejoin="round"/>
-        </svg>
-      </div>
+      <BbkbMark size={34} radius={8} />
       <div>
         <div style={{ fontSize: 14, fontWeight: 800, color: 'white', lineHeight: 1.2, letterSpacing: '-0.01em' }}>
           BBKB
@@ -183,18 +171,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {/* Brand */}
               <div>
                 <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 10 }}>
-                  <div style={{
-                    width: 28, height: 28, background: '#F5A623',
-                    borderRadius: 6, display: 'flex', alignItems: 'center', justifyContent: 'center',
-                  }}>
-                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                      <rect x="2" y="4" width="16" height="2" rx="1" fill="#0D2B5E"/>
-                      <rect x="2" y="8" width="12" height="2" rx="1" fill="#0D2B5E"/>
-                      <rect x="2" y="12" width="14" height="2" rx="1" fill="#0D2B5E"/>
-                      <circle cx="15" cy="14" r="4" fill="#0D2B5E"/>
-                      <path d="M13.5 14l1 1 2-2" stroke="#F5A623" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
+                  <BbkbMark size={28} radius={6} />
                   <div>
                     <div style={{ fontSize: 14, fontWeight: 800, color: 'white' }}>BBKB</div>
                     <div style={{ fontSize: 12, color: '#93c5fd', fontFamily: 'Noto Sans Bengali, sans-serif' }}>
