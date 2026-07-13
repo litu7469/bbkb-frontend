@@ -176,6 +176,7 @@ export default function DocumentsPage() {
   const [total,       setTotal]       = useState(0);
   const [page,        setPage]        = useState(1);
   const [loading,     setLoading]     = useState(true);
+  const [error,       setError]       = useState('');
   const PAGE_SIZE = 20;
 
   // Read URL params on initial load
@@ -187,6 +188,7 @@ export default function DocumentsPage() {
 
   const fetchDocuments = useCallback(async (p = 1) => {
     setLoading(true);
+    setError('');
     try {
       const params = new URLSearchParams();
       params.set('limit',  String(PAGE_SIZE));
@@ -202,12 +204,20 @@ export default function DocumentsPage() {
       if (sortBy === 'title_asc') params.set('order', 'title_en.asc');
 
       const res  = await fetch(`${API_URL}/api/v1/documents/?${params}`);
+      if (!res.ok) throw new Error(`Failed to load documents (server responded ${res.status})`);
       const data = await res.json();
       setDocuments(data.documents || data.items || []);
       setTotal(data.total || 0);
       setPage(p);
     } catch (err) {
       console.error(err);
+      setDocuments([]);
+      setTotal(0);
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Could not load documents. Please check your connection and try again.'
+      );
     } finally {
       setLoading(false);
     }
@@ -423,7 +433,7 @@ export default function DocumentsPage() {
       )}
 
       {/* Stats bar */}
-      {!loading && (
+      {!loading && !error && (
         <div className="stats-bar">
           {total === 0 ? (
             <span>No documents found matching your filters</span>
@@ -445,6 +455,32 @@ export default function DocumentsPage() {
               )}
             </>
           )}
+        </div>
+      )}
+
+      {/* Error state */}
+      {!loading && error && (
+        <div style={{
+          textAlign: 'center', padding: '3rem 2rem',
+          background: '#fef2f2', borderRadius: 16,
+          border: '1px solid #fecaca',
+        }}>
+          <div style={{ fontSize: '3rem', marginBottom: '1rem' }}>⚠️</div>
+          <p style={{ color: '#b91c1c', fontWeight: 700, fontSize: 16, marginBottom: 6 }}>
+            Could not load documents
+          </p>
+          <p style={{ color: '#dc2626', fontSize: 14, marginBottom: '1.5rem' }}>
+            {error}
+          </p>
+          <button onClick={() => fetchDocuments(page)}
+            style={{
+              background: '#dc2626', color: 'white',
+              border: 'none', borderRadius: 8,
+              padding: '0.625rem 1.5rem',
+              fontWeight: 700, fontSize: 14, cursor: 'pointer',
+            }}>
+            Try Again
+          </button>
         </div>
       )}
 
@@ -472,7 +508,7 @@ export default function DocumentsPage() {
       )}
 
       {/* Empty state */}
-      {!loading && filtered.length === 0 && (
+      {!loading && !error && filtered.length === 0 && (
         <div style={{
           textAlign: 'center', padding: '4rem 2rem',
           background: 'white', borderRadius: 16,

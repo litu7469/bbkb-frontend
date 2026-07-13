@@ -178,6 +178,7 @@ function SearchContent() {
   const [dateTo,      setDateTo]      = useState('');
   const [result,      setResult]      = useState<SearchResult | null>(null);
   const [loading,     setLoading]     = useState(false);
+  const [error,       setError]       = useState('');
   const [showFilters, setShowFilters] = useState(false);
 
   useEffect(() => {
@@ -190,6 +191,7 @@ function SearchContent() {
     if (!text || loading) return;
 
     setLoading(true);
+    setError('');
     try {
       const params = new URLSearchParams({ q: text, mode, limit: '20' });
       if (body)     params.set('issuing_body', body);
@@ -198,6 +200,7 @@ function SearchContent() {
       if (dateTo)   params.set('date_to',      dateTo);
 
       const res  = await fetch(`${API_URL}/api/v1/search/?${params}`);
+      if (!res.ok) throw new Error(`Search failed (server responded ${res.status})`);
       const data = await res.json();
 
       // Normalize API response — backend may return 'documents' or 'items'
@@ -213,6 +216,12 @@ function SearchContent() {
 
     } catch (err) {
       console.error(err);
+      setResult(null);
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Search failed. Please check your connection and try again.'
+      );
     } finally {
       setLoading(false);
     }
@@ -366,7 +375,7 @@ function SearchContent() {
       </div>
 
       {/* Sample Queries */}
-      {!result && !loading && (
+      {!result && !loading && !error && (
         <div style={{ marginBottom: '2rem' }}>
           <p style={{ fontSize: 12, fontWeight: 700, color: '#94a3b8',
                       textTransform: 'uppercase', letterSpacing: '0.05em', marginBottom: '0.5rem' }}>
@@ -384,6 +393,29 @@ function SearchContent() {
               </button>
             ))}
           </div>
+        </div>
+      )}
+
+      {/* Error */}
+      {error && !loading && (
+        <div style={{
+          textAlign: 'center', padding: '3rem',
+          background: '#fef2f2', border: '1px solid #fecaca',
+          borderRadius: 12,
+        }}>
+          <div style={{ fontSize: '2rem', marginBottom: '0.75rem' }}>⚠️</div>
+          <p style={{ color: '#b91c1c', fontWeight: 700 }}>Search failed</p>
+          <p style={{ color: '#dc2626', fontSize: 14, marginTop: 8, marginBottom: '1.25rem' }}>
+            {error}
+          </p>
+          <button onClick={() => doSearch()}
+            style={{
+              background: '#dc2626', color: 'white', border: 'none',
+              borderRadius: 8, padding: '0.5rem 1.25rem',
+              fontWeight: 700, fontSize: 14, cursor: 'pointer',
+            }}>
+            Try Again
+          </button>
         </div>
       )}
 

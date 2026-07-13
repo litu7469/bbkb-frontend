@@ -133,11 +133,13 @@ export default function HomePage() {
     try {
       // Single request for total count
       const totalRes = await fetch(`${API_URL}/api/v1/documents/?limit=1`);
+      if (!totalRes.ok) throw new Error(`Failed to load document count (server responded ${totalRes.status})`);
       const totalData = await totalRes.json();
       const total = totalData.total || 0;
 
       // Recent documents
       const recentRes  = await fetch(`${API_URL}/api/v1/documents/?limit=6&order=issue_date.desc`);
+      if (!recentRes.ok) throw new Error(`Failed to load recent documents (server responded ${recentRes.status})`);
       const recentData = await recentRes.json();
       setRecent(recentData.documents || recentData.items || []);
 
@@ -147,9 +149,11 @@ export default function HomePage() {
         try {
           await new Promise(r => setTimeout(r, 150)); // 150ms gap
           const res  = await fetch(`${API_URL}/api/v1/documents/?limit=1&issuing_body=${body}`);
+          if (!res.ok) throw new Error(`status ${res.status}`);
           const data = await res.json();
           by_body[body] = data.total || 0;
-        } catch {
+        } catch (bodyErr) {
+          console.error(`Failed to load ${body} document count:`, bodyErr);
           by_body[body] = 0;
         }
       }

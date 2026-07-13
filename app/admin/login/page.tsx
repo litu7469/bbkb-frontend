@@ -3,10 +3,17 @@
 import { useState } from 'react';
 import { createClient } from '@supabase/supabase-js';
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const SUPABASE_URL      = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const SUPABASE_ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+function getSupabaseClient() {
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    throw new Error(
+      'Authentication is not configured. Missing NEXT_PUBLIC_SUPABASE_URL / NEXT_PUBLIC_SUPABASE_ANON_KEY.'
+    );
+  }
+  return createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
 
 export default function AdminLoginPage() {
   const [email,    setEmail]    = useState('');
@@ -18,12 +25,23 @@ export default function AdminLoginPage() {
     e.preventDefault();
     setLoading(true);
     setError('');
-    const { error } = await supabase.auth.signInWithPassword({ email, password });
-    if (error) {
-      setError(error.message);
+    try {
+      const supabase = getSupabaseClient();
+      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) {
+        setError(error.message);
+        setLoading(false);
+      } else {
+        window.location.href = '/admin';
+      }
+    } catch (err) {
+      console.error(err);
+      setError(
+        err instanceof Error && err.message
+          ? err.message
+          : 'Unable to sign in right now. Please try again later.'
+      );
       setLoading(false);
-    } else {
-      window.location.href = '/admin';
     }
   }
 
