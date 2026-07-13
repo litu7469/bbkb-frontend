@@ -48,5 +48,6 @@ export async function askQuestion(queryText: string) {
 // ── Health ───────────────────────────────────────────────────
 export async function checkHealth() {
   const res = await fetch(`${API_URL}/health`);
+  if (!res.ok) throw new Error(`Health check failed (status ${res.status})`);
   return res.json();
 }
