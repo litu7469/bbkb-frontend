@@ -2,6 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { safeExternalUrl } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -244,7 +245,7 @@ function AskContent() {
                       </div>
 
                       {/* Link */}
-                      <a href={c.primary_url} target="_blank" rel="noopener noreferrer"
+                      <a href={safeExternalUrl(c.primary_url)} target="_blank" rel="noopener noreferrer"
                         className="bangla"
                         style={{ color: '#1d4ed8', fontSize: 13, textDecoration: 'underline', wordBreak: 'break-all' }}>
                         {isBn ? 'মূল দলিল দেখুন' : 'View original document'}

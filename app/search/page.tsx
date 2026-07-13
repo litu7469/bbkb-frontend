@@ -3,6 +3,7 @@
 import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { safeExternalUrl } from '@/lib/api';
 
 export const dynamic = 'force-dynamic';
 
@@ -145,7 +146,7 @@ function DocCard({ doc }: { doc: Document }) {
 
         {/* Action buttons */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', flexShrink: 0 }}>
-          <a href={doc.primary_url} target="_blank" rel="noopener noreferrer"
+          <a href={safeExternalUrl(doc.primary_url)} target="_blank" rel="noopener noreferrer"
             style={{
               background: '#1d4ed8', color: 'white', fontSize: 12,
               fontWeight: 600, padding: '0.4rem 0.875rem', borderRadius: 6,
