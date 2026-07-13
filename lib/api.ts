@@ -1,5 +1,20 @@
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
+// Only allow http(s) URLs from API data — blocks javascript:/data: URI injection
+// when a document URL is rendered into an anchor href.
+export function safeExternalUrl(url: string | null | undefined): string {
+  if (!url) return '#';
+  try {
+    const parsed = new URL(url, API_URL);
+    if (parsed.protocol === 'http:' || parsed.protocol === 'https:') {
+      return parsed.href;
+    }
+  } catch {
+    // fall through
+  }
+  return '#';
+}
+
 // ── Documents ────────────────────────────────────────────────
 export async function searchDocuments(query: string) {
   const res = await fetch(
