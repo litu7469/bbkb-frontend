@@ -11,10 +11,14 @@ node_modules/
 .env.production.local
 
 # Build output
+*.tsbuildinfo
 .next/
 out/
 dist/
 build/
+
+# Test coverage
+coverage/
 
 # Logs
 npm-debug.log*
